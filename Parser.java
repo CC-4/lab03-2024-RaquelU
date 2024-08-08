@@ -129,13 +129,128 @@ public class Parser {
 
     }
 
+    /* Desde mi terminal todo funciona pero no se por que no agarra como BAD INPUT al no terminar con ;
+    solo dice que no es aceptada mas no sale. Revise todo e hice cambios en lo que hice y no encontre por que */
+
     private boolean S() {
         return E() && term(Token.SEMI);
     }
 
+    /* TODO: sus otras funciones aqui */
+
     private boolean E() {
+        int save = next;
+        this.next = save;
+
+        next = save;
+        if ( E1() ) { return true;}
+
         return false;
     }
 
-    /* TODO: sus otras funciones aqui */
+    private boolean E1() {
+        return T() && H();
+    }
+
+    private boolean H() {
+        int save = next;
+        this.next = save;
+
+        next = save;
+        if ( H1() ) { return true;}
+
+        next = save;
+        if ( H2() ) { return true;}
+
+        next = save;
+        if ( H3() ) { return true;}
+
+        return false;
+    }
+
+    private boolean H1() {
+        return term(Token.PLUS) && T() && H();
+    }
+
+    private boolean H2() {
+        return term(Token.MINUS) && T() && H();
+    }
+
+    private boolean H3() {
+        return true;
+    }
+
+    private boolean T() {
+        return F() && L();
+    }
+
+    private boolean L() {
+        int save = next;
+        this.next = save;
+
+        next = save;
+        if ( L1() ) { return true;}
+
+        next = save;
+        if ( L2() ) { return true;}
+
+        next = save;
+        if ( L3() ) { return true;}
+
+        next = save;
+        if ( L4() ) { return true;}
+
+        next = save;
+        if ( L5() ) { return true;}
+
+        return false;
+    }
+
+    private boolean L1() {
+        return term(Token.MULT) && F() && L();
+    }
+
+    private boolean L2() {
+        return term(Token.DIV) && F() && L();
+    }
+
+    private boolean L3() {
+        return term(Token.MOD) && F() && L();
+    }
+
+    private boolean L4() {
+        return term(Token.EXP) && F() && L();
+    }
+
+    private boolean L5() {
+        return true;
+    }
+
+    private boolean F() {
+        int save = next;
+        this.next = save;
+        
+        next = save;
+        if ( F1() ) { return true;}
+
+        next = save;
+        if ( F2() ) { return true;}
+
+        next = save;
+        if ( F3() ) { return true;}
+
+        return false;
+    }
+
+    private boolean F1() {
+        return term(Token.UNARY) && F();
+    }
+
+    private boolean F2() {
+        return term(Token.LPAREN) && E() && term(Token.RPAREN);
+    }
+
+    private boolean F3() {
+        return term(Token.NUMBER);
+    }
 }
